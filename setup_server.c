@@ -43,7 +43,6 @@ void setup_server(int port_number, int should_print_messages) {
         pthread_t thread;
         int* client_fd_buf               = malloc(sizeof(int));
         connection_arguments* connection = malloc(sizeof(connection_arguments));
-        connection->should_print_messages = should_print_messages;
 
         *client_fd_buf = accept(socket_fd, (struct sockaddr*)&client_address,
                                 &client_address_len);

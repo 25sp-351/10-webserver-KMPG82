@@ -42,9 +42,11 @@ void handle_connection(void* connection) {
                 if (buffer[ix] == '\n') {
                     full_line[full_line_length] = '\0';
 
-                    if (current_connection->should_print_messages == 1)
-                        write(*current_connection->sock_fd_ptr, full_line,
-                              full_line_length);
+                    printf("%s\n", full_line);
+                    write(*current_connection->sock_fd_ptr, "HTTP/1.1 200 OK\n",
+                        sizeof("HTTP/1.1 200 OK\n"));
+                    write(*current_connection->sock_fd_ptr, "I got it\n",
+                          sizeof("I got it\n"));
 
                     full_line_length = 0;
                 }

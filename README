@@ -1,0 +1,1 @@
+- I used strcmp. In the c style guide it says ideally we shouldn't use it, but is it ok if I used it in this case? Lmk and I will change it if needed.

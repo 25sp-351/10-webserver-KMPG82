@@ -1,12 +1,13 @@
+#include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
 
 #include "connection_arguments.h"
+#include "calc_request.h"
 
-#define BUFFER_SIZE 5
-#define BUFFER_MULTIPLIER 2
+#define BUFFER_SIZE 200
 
 // takes in a connection_arguments object that contains information about an
 // accepted connection, then will echo each message it recieves from that
@@ -19,47 +20,51 @@ void handle_connection(void* connection) {
     printf("Handling connection on %d\n", *current_connection->sock_fd_ptr);
 
     char buffer[BUFFER_SIZE];
-    char* full_line        = malloc(BUFFER_SIZE);
-    int full_line_length   = 0;
-    int full_line_capacity = BUFFER_SIZE;
-    int bytes_read         = 0;
+    char* full_line      = malloc(BUFFER_SIZE);
+    int full_line_length = 0;
+    int bytes_read       = 0;
 
-    while (1) {
-        memset(buffer, 0, sizeof(buffer));
-        bytes_read =
-            read(*current_connection->sock_fd_ptr, buffer, BUFFER_SIZE);
+    bytes_read = read(*current_connection->sock_fd_ptr, buffer, BUFFER_SIZE);
 
-        if (bytes_read > 0) {
-            for (int ix = 0; ix < bytes_read; ++ix) {
-                if (full_line_length + 1 >= full_line_capacity) {
-                    full_line_capacity *= BUFFER_MULTIPLIER;
-                    char* new_line = realloc(full_line, full_line_capacity);
-                    full_line      = new_line;
-                }
+    if (bytes_read > 0) {
+        for (int ix = 0; ix < bytes_read; ++ix) {
+            full_line[full_line_length++] = buffer[ix];
 
-                full_line[full_line_length++] = buffer[ix];
-
-                if (buffer[ix] == '\n') {
-                    full_line[full_line_length] = '\0';
-
-                    printf("%s\n", full_line);
-                    write(*current_connection->sock_fd_ptr, "HTTP/1.1 200 OK\n",
-                        sizeof("HTTP/1.1 200 OK\n"));
-                    write(*current_connection->sock_fd_ptr, "I got it\n",
-                          sizeof("I got it\n"));
-
-                    full_line_length = 0;
-                }
+            if (full_line_length >= 2 &&
+                full_line[full_line_length - 2] == '\r' &&
+                full_line[full_line_length - 1] == '\n') {
+                full_line[full_line_length - 2] = '\0';  // Trim \r\n
+                break;
             }
-
-            continue;
         }
 
-        break;
+        // printf("HTTP Request Line: %s\n", full_line);
+
+        char method[BUFFER_SIZE];
+        char path[BUFFER_SIZE];
+        char version[BUFFER_SIZE];
+
+        int parsed =
+            sscanf(full_line, "%s %s %s", method, path, version);
+
+        if (parsed == 3) {
+            printf("Method: %s\n", method);
+            printf("Path: %s\n", path);
+            printf("Version: %s\n", version);
+
+            char first_word[BUFFER_SIZE];
+            int matched = sscanf(path, "/%[^/]", first_word);
+
+            // need this to have brackets
+            if (strcmp(first_word, "calc") == 0) {
+                calc_request(path, current_connection);
+            }
+        }
+
     }
 
-    free(full_line);
     close(*current_connection->sock_fd_ptr);
     printf("Done with connection %d\n", *current_connection->sock_fd_ptr);
+    free(full_line);
     free(current_connection);
 }

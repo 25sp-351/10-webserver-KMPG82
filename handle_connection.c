@@ -1,4 +1,3 @@
-#include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -44,23 +43,29 @@ void handle_connection(void* connection) {
         char path[BUFFER_SIZE];
         char version[BUFFER_SIZE];
 
-        int parsed =
-            sscanf(full_line, "%s %s %s", method, path, version);
+        int parsed = sscanf(full_line, "%s %s %s", method, path, version);
 
         if (parsed == 3) {
             printf("Method: %s\n", method);
             printf("Path: %s\n", path);
             printf("Version: %s\n", version);
 
-            char first_word[BUFFER_SIZE];
-            int matched = sscanf(path, "/%[^/]", first_word);
+            //maybe separate this section to a module called process_request
+            if (strcmp(method, "GET") == 0) {
+                char first_word[BUFFER_SIZE];
+                int matched = sscanf(path, "/%[^/]", first_word);
 
-            // need this to have brackets
-            if (strcmp(first_word, "calc") == 0) {
-                calc_request(path, current_connection);
+                // need this to have brackets
+                if (strcmp(first_word, "calc") == 0)
+                    calc_request(path, current_connection);
+                else if (strcmp(first_word, "static") == 0)
+                    printf("STATIC\n");
+            } else {
+                printf("ERROR\n");
             }
+        } else {
+            printf("ERROR\n");
         }
-
     }
 
     close(*current_connection->sock_fd_ptr);

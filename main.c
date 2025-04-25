@@ -10,7 +10,7 @@
 // takes in cmd line arguments, sets default port, sets if messages should be
 // echo'd, and valides the input
 int main(int argc, char* argv[]) {
-    int port_number           = DEFAULT_PORT;
+    int port_number = DEFAULT_PORT;
 
     if (argc > 4) {
         usage_message();

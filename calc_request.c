@@ -1,25 +1,22 @@
 #include <stdio.h>
 #include <string.h>
-#include <unistd.h>
 
 #include "connection_arguments.h"
 #include "calc_response.h"
 
 #define BUFFER_SIZE 200
 
-void calc_request(char* path, connection_arguments* current_connection) {
-    printf("%s\n", path);
-
+void calc_request(const char* path, connection_arguments* current_connection) {
     char calc[BUFFER_SIZE];
     char operation[BUFFER_SIZE];
     int first_number    = 0;
     int second_number   = 0;
     double result       = 0.0;
     char operation_sign = '\0';
-    int path_parsed     = sscanf(path, "/%[^/]/%[^/]/%d/%d", calc, operation,
+    int parsed_path     = sscanf(path, "/%[^/]/%[^/]/%d/%d", calc, operation,
                                  &first_number, &second_number);
 
-    if (path_parsed == 4) {
+    if (parsed_path == 4) {
         if (strcmp(operation, "add") == 0) {
             result         = first_number + second_number;
             operation_sign = '+';
@@ -30,6 +27,8 @@ void calc_request(char* path, connection_arguments* current_connection) {
             if (second_number != 0)
                 result = (double)first_number / second_number;
             operation_sign = '/';
+        } else {
+            printf("ERROR");
         }
 
         calc_response(current_connection, first_number, operation_sign,

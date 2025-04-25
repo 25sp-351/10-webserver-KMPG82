@@ -4,7 +4,7 @@
 #include <unistd.h>
 
 #include "connection_arguments.h"
-#include "calc_request.h"
+#include "process_request.h"
 
 #define BUFFER_SIZE 200
 
@@ -32,40 +32,12 @@ void handle_connection(void* connection) {
             if (full_line_length >= 2 &&
                 full_line[full_line_length - 2] == '\r' &&
                 full_line[full_line_length - 1] == '\n') {
-                full_line[full_line_length - 2] = '\0';  // Trim \r\n
+                full_line[full_line_length - 2] = '\0';
                 break;
             }
         }
 
-        // printf("HTTP Request Line: %s\n", full_line);
-
-        char method[BUFFER_SIZE];
-        char path[BUFFER_SIZE];
-        char version[BUFFER_SIZE];
-
-        int parsed = sscanf(full_line, "%s %s %s", method, path, version);
-
-        if (parsed == 3) {
-            printf("Method: %s\n", method);
-            printf("Path: %s\n", path);
-            printf("Version: %s\n", version);
-
-            //maybe separate this section to a module called process_request
-            if (strcmp(method, "GET") == 0) {
-                char first_word[BUFFER_SIZE];
-                int matched = sscanf(path, "/%[^/]", first_word);
-
-                // need this to have brackets
-                if (strcmp(first_word, "calc") == 0)
-                    calc_request(path, current_connection);
-                else if (strcmp(first_word, "static") == 0)
-                    printf("STATIC\n");
-            } else {
-                printf("ERROR\n");
-            }
-        } else {
-            printf("ERROR\n");
-        }
+        process_request(full_line, current_connection);
     }
 
     close(*current_connection->sock_fd_ptr);

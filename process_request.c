@@ -8,6 +8,9 @@
 
 #define BUFFER_SIZE 200
 
+// takes in the line for the http request, and information about the current
+// connection, then parses the request to see what type of request the client
+// has sent
 void process_request(const char* full_line,
                      connection_arguments* current_connection) {
     char method[BUFFER_SIZE];

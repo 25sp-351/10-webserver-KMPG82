@@ -10,6 +10,8 @@
 
 #define STATIC_PREFIX_LENGTH 7
 
+// takes in the specified path from the request and information about the
+// current connection, then fetches the image the client wants
 void static_request(const char* path,
                     connection_arguments* current_connection) {
     const char* relative_path = path + STATIC_PREFIX_LENGTH;

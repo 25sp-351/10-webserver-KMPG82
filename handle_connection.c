@@ -10,8 +10,7 @@
 
 // takes in a connection_arguments object that contains information about an
 // accepted connection, then will echo each message it recieves from that
-// connection if -v specified in cmd line, will close connection and free memory
-// used for the connection
+// connection, will close connection and free memory used for the connection
 void handle_connection(void* connection) {
     connection_arguments* current_connection =
         (connection_arguments*)connection;
@@ -40,8 +39,9 @@ void handle_connection(void* connection) {
         process_request(full_line, current_connection);
     }
 
-    close(*current_connection->sock_fd_ptr);
     printf("Done with connection %d\n", *current_connection->sock_fd_ptr);
+
+    close(*current_connection->sock_fd_ptr);
     free(full_line);
     free(current_connection);
 }

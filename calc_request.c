@@ -6,6 +6,8 @@
 
 #define BUFFER_SIZE 200
 
+// takes information about the current connection and the specified calc path,
+// then parses and processes the path, then computes the result
 void calc_request(const char* path, connection_arguments* current_connection) {
     char calc[BUFFER_SIZE];
     char operation[BUFFER_SIZE];

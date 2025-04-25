@@ -12,10 +12,9 @@
 
 #define LISTEN_BACKLOG 1
 
-// takes in two integers, one for port number and one that specifies if messages
-// should be echo'd, then establishes the server and waits for incoming
+// takes in a port number, then establishes the server and waits for incoming
 // connection requests, will create a thread for each accepted connection
-void setup_server(int port_number, int should_print_messages) {
+void setup_server(int port_number) {
     int socket_fd = socket(AF_INET, SOCK_STREAM, 0);
     struct sockaddr_in socket_address;
     memset(&socket_address, '\0', sizeof(socket_address));

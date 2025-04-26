@@ -8,6 +8,7 @@
 #include <unistd.h>
 
 #include "static_response.h"
+#include "http_error_codes.h"
 
 #define STATIC_PREFIX_LENGTH 7
 
@@ -23,13 +24,7 @@ void static_request(const char* path,
 
     int file = open(file_path, O_RDONLY);
     if (file < 0) {
-        const char* not_found =
-            "HTTP/1.1 404 Not Found\r\n"
-            "Content-Length: 13\r\n"
-            "Content-Type: text/plain\r\n"
-            "\r\n"
-            "404 Not Found";
-        write(*current_connection->sock_fd_ptr, not_found, strlen(not_found));
+        send_404(current_connection);
         free(file_path);
         return;
     }

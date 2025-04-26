@@ -4,6 +4,7 @@
 #include <string.h>
 
 #include "calc_response.h"
+#include "http_error_codes.h"
 
 #define BUFFER_SIZE 200
 
@@ -31,12 +32,12 @@ void calc_request(const char* path, connection_arguments* current_connection) {
                 result = (double)first_number / second_number;
             operation_sign = '/';
         } else {
-            printf("ERROR");
+            send_400(current_connection);
         }
 
         calc_response(current_connection, first_number, operation_sign,
                       second_number, result);
     } else {
-        printf("ERROR\n");
+        send_400(current_connection);
     }
 }

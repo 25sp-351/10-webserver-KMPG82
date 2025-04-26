@@ -5,8 +5,10 @@
 #include <string.h>
 #include <unistd.h>
 
-#define RESPONSE_SIZE 512
+#define RESPONSE_SIZE 1000
 
+// takes information about the current connection and displays the user
+// interface
 void display_interface(connection_arguments* current_connection) {
     const char* body =
         "Kevin Ponting's web "
@@ -16,7 +18,8 @@ void display_interface(connection_arguments* current_connection) {
         "below:\n\n\t\thttp://localhost:<port "
         "number>/calc/<operation>/<operand>/<operand>\n\n2.\tYou can access an "
         "image file from the server if you enter a url such as the one "
-        "below:\n\n\t\thttp://localhost:<port number>/static/images/<file>";
+        "below:\n\n\t\thttp://localhost:<port number>/static/images/<file>\n\n"
+        "\t\tAvailable image files:\n\t\t\tlebron.jpg\n\t\t\tcurry.jpg";
 
     int body_length = strlen(body);
     char response[RESPONSE_SIZE];

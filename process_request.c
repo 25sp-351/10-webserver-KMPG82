@@ -6,6 +6,7 @@
 
 #include "calc_request.h"
 #include "display_interface.h"
+#include "http_error_codes.h"
 #include "static_request.h"
 
 #define BUFFER_SIZE 200
@@ -32,11 +33,10 @@ void process_request(const char* full_line,
                 static_request(path, current_connection);
             else if (strcmp(path, "/") == 0)
                 display_interface(current_connection);
-
         } else {
-            printf("ERROR\n");
+            send_405(current_connection);
         }
     } else {
-        printf("ERROR\n");
+        send_400(current_connection);
     }
 }

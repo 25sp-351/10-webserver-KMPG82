@@ -5,6 +5,8 @@
 #include <string.h>
 #include <unistd.h>
 
+#include "http_error_codes.h"
+
 #define BODY_SIZE 200
 #define RESPONSE_SIZE 512
 
@@ -15,7 +17,7 @@ void calc_response(connection_arguments* current_connection, int first_number,
     char body[BODY_SIZE];
     if (operation == '/') {
         if (second_number == 0) {
-            snprintf(body, sizeof(body), "ERROR");
+            send_400(current_connection);
         } else {
             snprintf(body, sizeof(body), "%d %c %d = %.2f", first_number,
                      operation, second_number, result);

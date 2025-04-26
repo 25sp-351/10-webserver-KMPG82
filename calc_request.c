@@ -1,7 +1,8 @@
+#include "calc_request.h"
+
 #include <stdio.h>
 #include <string.h>
 
-#include "connection_arguments.h"
 #include "calc_response.h"
 
 #define BUFFER_SIZE 200

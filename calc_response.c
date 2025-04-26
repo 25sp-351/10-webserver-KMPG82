@@ -1,9 +1,9 @@
+#include "calc_response.h"
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
-
-#include "connection_arguments.h"
 
 #define BODY_SIZE 200
 #define RESPONSE_SIZE 512

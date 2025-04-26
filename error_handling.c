@@ -2,6 +2,7 @@
 #include <string.h>
 
 #define LOWER_BOUND_PORT 1024
+#define UPPER_BOUND_PORT 8888
 
 // takes in a string as input, if the string has additional trailing characters,
 // returns 0, else returns 1
@@ -17,5 +18,6 @@ int check_additional_characters(const char *buffer) {
 // port number greater than 1024, else returns 1
 int validate_port_number(const char *buffer, int *port_number) {
     return (!sscanf(buffer, "%d", port_number) ||
-            *port_number <= LOWER_BOUND_PORT);
+            *port_number <= LOWER_BOUND_PORT) ||
+           *port_number > UPPER_BOUND_PORT;
 }

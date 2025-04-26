@@ -1,3 +1,5 @@
+#include "setup_server.h"
+
 #include <arpa/inet.h>
 #include <ctype.h>
 #include <netinet/in.h>
@@ -7,7 +9,6 @@
 #include <string.h>
 #include <sys/socket.h>
 
-#include "connection_arguments.h"
 #include "handle_connection.h"
 
 #define LISTEN_BACKLOG 1

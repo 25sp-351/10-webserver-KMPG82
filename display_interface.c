@@ -1,9 +1,9 @@
+#include "display_interface.h"
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
-
-#include "connection_arguments.h"
 
 #define RESPONSE_SIZE 512
 
@@ -18,8 +18,8 @@ void display_interface(connection_arguments* current_connection) {
         "image file from the server if you enter a url such as the one "
         "below:\n\n\t\thttp://localhost:<port number>/static/images/<file>";
 
-    int body_length     = strlen(body);
-    char* response      = malloc(RESPONSE_SIZE);
+    int body_length = strlen(body);
+    char response[RESPONSE_SIZE];
     int response_length = snprintf(response, RESPONSE_SIZE,
                                    "HTTP/1.1 200 OK\r\n"
                                    "Content-Length: %d\r\n"
@@ -29,5 +29,4 @@ void display_interface(connection_arguments* current_connection) {
                                    body_length, body);
 
     write(*current_connection->sock_fd_ptr, response, response_length);
-    free(response);
 }

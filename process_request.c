@@ -1,11 +1,12 @@
+#include "process_request.h"
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
-#include "connection_arguments.h"
 #include "calc_request.h"
-#include "static_request.h"
 #include "display_interface.h"
+#include "static_request.h"
 
 #define BUFFER_SIZE 200
 
@@ -29,9 +30,8 @@ void process_request(const char* full_line,
                 calc_request(path, current_connection);
             else if (strcmp(first_word, "static") == 0)
                 static_request(path, current_connection);
-            else if (strcmp(path, "/") == 0) {
+            else if (strcmp(path, "/") == 0)
                 display_interface(current_connection);
-            }
 
         } else {
             printf("ERROR\n");

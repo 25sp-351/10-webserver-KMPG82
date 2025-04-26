@@ -4,6 +4,6 @@
 void usage_message() {
     printf(
         "Invalid input. If port number is specified, use one greater than "
-        "1024, and must be after -p. For exmaple: ./main -p <port number> "
+        "1024, but lower than 8889, and must be after -p. For exmaple: ./main -p <port number> "
         "-v\n");
 }

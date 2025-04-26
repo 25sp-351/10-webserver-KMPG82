@@ -1,3 +1,5 @@
+#include "static_request.h"
+
 #include <fcntl.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -5,7 +7,6 @@
 #include <sys/stat.h>
 #include <unistd.h>
 
-#include "connection_arguments.h"
 #include "static_response.h"
 
 #define STATIC_PREFIX_LENGTH 7

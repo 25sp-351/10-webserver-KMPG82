@@ -1,6 +1,6 @@
 all: main
 
-OBJS = main.o handle_connection.o usage_message.o setup_server.o error_handling.o calc_request.o calc_response.o static_request.o process_request.o static_response.o
+OBJS = main.o handle_connection.o usage_message.o setup_server.o error_handling.o calc_request.o calc_response.o static_request.o process_request.o static_response.o display_interface.o
 CC = clang
 CFLAGS = -g -Wall
 
@@ -25,7 +25,9 @@ static_request: static_request.c static_response.h
 
 static_response: static_response.c
 
-process_request: process_request.c calc_request.h static_request.h
+process_request: process_request.c calc_request.h static_request.h display_interface.h
+
+display_interface: display_interface.c
 
 clean:
 	rm -f main $(OBJS)
